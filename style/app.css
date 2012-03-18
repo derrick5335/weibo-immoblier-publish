@@ -1,0 +1,8 @@
+body{
+	text-align: center;
+}
+#main-content{
+	margin: auto;
+	width:760px;
+	background-color:#DDD;
+}
