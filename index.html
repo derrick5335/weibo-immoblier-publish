@@ -4,28 +4,48 @@
 <html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>法国房源发布器</title>
+	<title>法国房源发布</title>
 	
 	<!-- script resources -->
 	<script src="http://tjs.sjs.sinajs.cn/open/api/js/wb.js?appkey=488430092" type="text/javascript" charset="utf-8"></script>
 	<script src="jquery-1.7.1.js" type="text/javascript" charset="utf-8"></script>
 	<script src="bootstrap/js/bootstrap.js" type="text/javascript" charset="utf-8"></script>
+	<script src="http://tjs.sjs.sinajs.cn/t35/apps/opent/js/frames/client.js" language="JavaScript"></script>
 	<script type="text/javascript">
+		$(document).ready(function() {
+	
+	/*
+	$.ajax({
+		  url: "test.html",
+		  context: document.body,
+		  success: function(){
+		    $(this).addClass("done");
+		  }
+		});
+*/
 	
 		WB2.anyWhere(function(W){
 			W.widget.connectButton({
-					id: "wb_connect_btn",
-					callback : {
-						login:function(o){
-							//alert(o.screen_name)
-						},
-						logout:function(){
-							//alert('logout');
-						}
+				id: "wb_connect_btn",
+				callback : {
+					login:function(o){
+						console.log(o,"logged in");
+											
+						$.getJSON("https://api.weibo.com/2/friendships/friends.json",{
+							uid : o.id
+						},function(json) {
+						    console.log("json",json);
+						});
+						
+					},
+					logout:function(){
+						//alert('logout');
 					}
+				}
 			});
+		}); 
 		});
-
+		
 	</script>
 
 	<!-- css resources -->
@@ -144,7 +164,7 @@
 			          
 			          
 					<div class="control-group">
-			            <label class="control-label" for="input01">地铁</label>
+			            <label class="control-label" for="input01">交通</label>
 			            <div class="controls">
 			              <input type="text" class="input-xlarge" id="input01" placeholder="地铁，公交，RER">			             
 			            </div>
