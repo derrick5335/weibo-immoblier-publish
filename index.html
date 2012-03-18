@@ -30,12 +30,43 @@
 				callback : {
 					login:function(o){
 						console.log(o,"logged in");
+						
+						$.ajax({
+						  type: "POST",
+						  url: "https://api.t.sina.com.cn/oauth2/authorize?client_id=488430092&redirect_uri=http://faguofangyuan.panyunpeng.com///response&response_type=token",
+						  dataType:"jsonp",
+						  data: {
+						  	client_id : 488430092,
+						  	redirect_uri:"http://localhost:8888/weibo-immoblier-publish/",
+						  	response_type:"token" 	 
+						  
+						  },
+						  
+						}).done(function( msg ) {
+						  console.log("msg",msg);
+						});
+						
+						
+						
+					/*
+	$.ajax({
+						  type: "POST",
+						  url: "https://api.weibo.com/oauth2/access_token",
+						  data: "client_id=488430092&client_secret=e05db18a85fe177435b48614088e5283&grant_type="
+						}).done(function( msg ) {
+						  console.log("msg",msg);
+						});
+*/
+						
+						
 											
-						$.getJSON("https://api.weibo.com/2/friendships/friends.json",{
+						/*
+$.getJSON("https://api.weibo.com/2/friendships/friends.json",{
 							uid : o.id
 						},function(json) {
 						    console.log("json",json);
 						});
+*/
 						
 					},
 					logout:function(){
@@ -60,7 +91,7 @@
 	<div id="main-content">
 		<div class="hero-unit">
 		  <h1>微博快速发布房源信息</h1>
-		  <p>最快速高效的发布方式</p>
+		  <p>法国地区最快速高效的发布方式</p>
 		  <p>
 		   <span id="wb_connect_btn"></span>
 		  </p>
@@ -73,7 +104,7 @@
 			          <div class="control-group">
 			            <label class="control-label" for="input01">城市</label>
 			            <div class="controls">
-			              <input type="text" class="input-xlarge" id="input01">			             
+			              <input type="text" class="input-xlarge" id="input01" placeholder="小巴黎，大巴黎，马赛 等等">			             
 			            </div>
 			          </div>
 		          
@@ -175,8 +206,19 @@
 			            <div class="controls">
 			              <input type="text" class="input-xlarge" id="input01" placeholder="电话，QQ，Email, MSN">			             
 			            </div>
-			          </div>  
+			          </div>
 			          
+			          
+			          <div class="control-group">
+			            <label class="control-label" for="prependedInput">站外链接</label>
+			            <div class="controls">
+			              <div class="input-prepend">
+			                <span class="add-on">http://</span><input class="span2" id="prependedInput" size="16" type="text">
+			              </div>
+			              <p class="help-block">照片外部链接，战法链接,华人街链接</p>
+			            </div>
+			          </div>
+			          			   			          
         
 			          <div class="control-group">
 			            <label class="control-label" for="fileInput">照片</label>
