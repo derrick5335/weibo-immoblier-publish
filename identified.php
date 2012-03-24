@@ -39,7 +39,7 @@ $user_friends = $c->friends_by_id($uid);
 				
 					searchHintSrc.push(arrayData[i].nickname);
 				}
-				console.log("out",searchHintSrc);
+				
 				return searchHintSrc;
 			
 			};
@@ -50,7 +50,7 @@ $user_friends = $c->friends_by_id($uid);
 	            ev.preventDefault();
 	
 	            //filter out up/down, tab, enter, and escape keys
-	            if( $.inArray(ev.keyCode,[40,38,9,13,27]) === -1 ){
+	            if( $.inArray(ev.keyCode,[37,38,39,40,9,13,27]) === -1 ){
 	
 	                var self = $(this);
 	                var arr = new Array();
