@@ -29,8 +29,7 @@ $user_friends = $c->friends_by_id($uid);
 
 		$(document).ready(function() {
 		
-			var searchHint = $('#searchHint').typeahead();	
-
+			//reconstruct the data from the server to be appropriate for the data source for typeahead functions
 			constructTypeaheadSrc = function(value){
 			
 				var arrayData = value.data;
@@ -40,35 +39,61 @@ $user_friends = $c->friends_by_id($uid);
 				
 					searchHintSrc.push(arrayData[i].nickname);
 				}
-			
-				searchHint.data('typeahead').source = searchHintSrc; //where newSource is your own array
-				
-				console.log("search hint data src",searchHintSrc );
+				console.log("out",searchHintSrc);
+				return searchHintSrc;
 			
 			};
+		
+			var autocomplete = $('#searchHint').typeahead().on('keyup', function(ev){
+	
+	            ev.stopPropagation();
+	            ev.preventDefault();
+	
+	            //filter out up/down, tab, enter, and escape keys
+	            if( $.inArray(ev.keyCode,[40,38,9,13,27]) === -1 ){
+	
+	                var self = $(this);
+	                var arr = new Array();
+	                var queryKeyword = $(this).val();
+	                
+	                //set typeahead source to empty
+	                self.data('typeahead').source = [];
+	
+	                //active used so we aren't triggering duplicate keyup events
+	                if( !self.data('active') && self.val().length > 0){
+	
+	                    self.data('active', true);
+	                    
+	                    var request = $.ajax({
 					
-			$('#searchHint').keyup(function(e){
-			
-				var queryKeyword = $('#searchHint').val();
-				
-				var request = $.ajax({
-				
-				  url: "https://api.weibo.com/2/search/suggestions/at_users.json",
-				  type: "GET",
-				  data: {
-				  	access_token : token,
-				  	q:encodeURI(queryKeyword),
-				  	type:0
-				  },
-				  dataType: "jsonp"
-				}).done(function(result){
-					constructTypeaheadSrc(result);
-				});
-			
-			});
+						  url: "https://api.weibo.com/2/search/suggestions/at_users.json",
+						  type: "GET",
+						  data: {
+						  	access_token : token,
+						  	q:encodeURI(queryKeyword),
+						  	type:0
+						  },
+						  dataType: "jsonp"
+						}).done(function(result){
+							
+							arr = constructTypeaheadSrc(result);
+							console.log("arr",arr);
+							//set your results into the typehead's source 
+		                    self.data('typeahead').source = arr;
 		
-		});
+		                    //trigger keyup on the typeahead to make it search
+		                    self.trigger('keyup');
 		
+		                    //All done, set to false to prepare for the next remote query.
+		                    self.data('active', false);
+						});
+	
+	                }
+	            }
+	        });
+        
+        });
+	
 	</script>
 
 	<!-- css resources -->
